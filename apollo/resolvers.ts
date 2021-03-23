@@ -1,7 +1,5 @@
 export const resolvers = {
     Query: {
-        viewer() {
-            return { id: 1, name: 'Taro', status: 'cached' }
-        }
+        recipes: async (_, __, {dataSources}) => dataSources.cookpad.getRecipes()
     }
 }

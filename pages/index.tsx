@@ -1,32 +1,38 @@
 import {gql, useQuery} from "@apollo/client"
 import {initializeApollo} from "../apollo/client";
 
-const ViewerQuery = gql`
-  query ViewerQuery {
-    viewer {
-      id
-      name
+const RecipesQuery = gql`
+    query {
+        recipes {
+            recipes {
+                id
+                title
+            }
+        }
     }
-  }
 `
 
 const Index = () => {
-    const {loading, error, data} = useQuery(ViewerQuery)
+    const {loading, error, data} = useQuery(RecipesQuery)
     if (loading) {
         return <div>Loading...</div>
     }
     if (error) {
         return <div>Error: {JSON.stringify(error)}</div>
     }
-    const {viewer} = data
-    return <h1>Hello {viewer.name}!</h1>;
+    const {recipes} = data;
+    return <div>
+        <ul>
+            {recipes.recipes.map((value) => <li>{value.title}</li>)}
+        </ul>
+    </div>;
 };
 
 export async function getStaticProps() {
     const apolloClient = initializeApollo()
 
     await apolloClient.query({
-        query: ViewerQuery,
+        query: RecipesQuery,
     })
 
     return {

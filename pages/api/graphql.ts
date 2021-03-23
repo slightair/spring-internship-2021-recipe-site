@@ -1,4 +1,5 @@
 import {ApolloServer} from "apollo-server-micro";
+import {CookpadDataSource} from "../../apollo/CookpadDataSource";
 import {schema} from "../../apollo/schema";
 
 export const config = {
@@ -7,5 +8,10 @@ export const config = {
     },
 };
 
-const apolloServer = new ApolloServer({schema});
+const apolloServer = new ApolloServer({
+    schema,
+    dataSources: () => ({
+        cookpad: new CookpadDataSource(),
+    }),
+});
 export default apolloServer.createHandler({path: '/api/graphql'});

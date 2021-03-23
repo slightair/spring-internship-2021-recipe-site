@@ -1,26 +1,16 @@
 import {useMemo} from "react";
-import {ApolloClient, InMemoryCache} from "@apollo/client";
+import {ApolloClient, HttpLink, InMemoryCache} from "@apollo/client";
 
 let apolloClient
 
-function createIsomorphLink() {
-    if (typeof window === 'undefined') {
-        const {SchemaLink} = require('@apollo/client/link/schema')
-        const {schema} = require('./schema')
-        return new SchemaLink({schema})
-    } else {
-        const {HttpLink} = require('@apollo/client/link/http')
-        return new HttpLink({
-            uri: '/api/graphql',
-            credentials: 'same-origin',
-        })
-    }
-}
-
 function createApolloClient() {
+    const origin = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000';
     return new ApolloClient({
         ssrMode: typeof window === 'undefined',
-        link: createIsomorphLink(),
+        link: new HttpLink({
+            uri: `${origin}/api/graphql`,
+            credentials: 'same-origin',
+        }),
         cache: new InMemoryCache(),
     })
 }
