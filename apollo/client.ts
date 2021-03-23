@@ -4,7 +4,7 @@ import {ApolloClient, HttpLink, InMemoryCache} from "@apollo/client";
 let apolloClient
 
 function createApolloClient() {
-    const origin = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000';
+    const origin = process.env.NODE_ENV == 'development' ? 'http://localhost:3000' : '';
     return new ApolloClient({
         ssrMode: typeof window === 'undefined',
         link: new HttpLink({
