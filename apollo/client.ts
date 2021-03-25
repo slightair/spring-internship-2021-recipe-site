@@ -4,7 +4,7 @@ import {ApolloClient, HttpLink, InMemoryCache} from "@apollo/client";
 let apolloClient
 
 function createApolloClient() {
-    const origin = process.env.NODE_ENV == 'development' ? 'http://localhost:3000' : process.env.APP_URL;
+    const origin = process.env.NODE_ENV == 'development' ? 'http://localhost:3000' : '';
     return new ApolloClient({
         ssrMode: typeof window === 'undefined',
         link: new HttpLink({
