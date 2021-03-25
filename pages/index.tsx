@@ -1,4 +1,5 @@
 import {gql, useQuery} from "@apollo/client"
+import {initializeApollo} from "../apollo/client";
 
 const RecipesQuery = gql`
     query {
@@ -27,18 +28,18 @@ const Index = () => {
     </div>;
 };
 
-// export async function getStaticProps() {
-//     const apolloClient = initializeApollo()
-//
-//     await apolloClient.query({
-//         query: RecipesQuery,
-//     })
-//
-//     return {
-//         props: {
-//             initializeApolloState: apolloClient.cache.extract(),
-//         }
-//     }
-// }
+export async function getStaticProps() {
+    const apolloClient = initializeApollo()
+
+    await apolloClient.query({
+        query: RecipesQuery,
+    })
+
+    return {
+        props: {
+            initializeApolloState: apolloClient.cache.extract(),
+        }
+    }
+}
 
 export default Index;
