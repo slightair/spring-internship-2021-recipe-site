@@ -1,44 +1,16 @@
-import {gql, useQuery} from "@apollo/client"
-
-const RecipesQuery = gql`
-    query {
-        recipes {
-            recipes {
-                id
-                title
-            }
-        }
-    }
-`
+import {useRecipes} from "../lib/client/useRecipes";
 
 const Index = () => {
-    const {loading, error, data} = useQuery(RecipesQuery)
-    if (loading) {
+    const connection = useRecipes();
+    if (connection) {
+        return <div>
+            <ul>
+                {connection.recipes.map((value) => <li>{value.title}</li>)}
+            </ul>
+        </div>;
+    } else {
         return <div>Loading...</div>
     }
-    if (error) {
-        return <div>Error: {JSON.stringify(error)}</div>
-    }
-    const {recipes} = data;
-    return <div>
-        <ul>
-            {recipes.recipes.map((value) => <li>{value.title}</li>)}
-        </ul>
-    </div>;
 };
-
-// export async function getStaticProps() {
-//     const apolloClient = initializeApollo()
-//
-//     await apolloClient.query({
-//         query: RecipesQuery,
-//     })
-//
-//     return {
-//         props: {
-//             initializeApolloState: apolloClient.cache.extract(),
-//         }
-//     }
-// }
 
 export default Index;
